@@ -1,0 +1,47 @@
+---
+- name: Configure Interfaces and IP-Routes on Router-Berlin
+  hosts: Router-Paris
+
+  tasks:
+  - name: Replaces device configuration of listed interfaces with provided configuration
+    cisco.ios.ios_interfaces:
+      config:
+      - name: GigabitEthernet0/1
+        description: Configured and Replaced by Ansible Network
+        enabled: true
+        duplex: auto
+        mtu: 2500
+        speed: 1000
+      state: replaced
+
+  - name: Replaces device configuration of listed interfaces with provided configuration
+    cisco.ios.ios_l3_interfaces:
+      config:
+      - name: GigabitEthernet0/1
+        ipv4:
+        - address: 10.5.1.2/24
+      state: replaced
+
+  - name: Replaces device configuration of listed interfaces with provided configuration
+    cisco.ios.ios_interfaces:
+      config:
+      - name: GigabitEthernet0/2
+        description: Configured and Replaced by Ansible Network
+        enabled: true
+        duplex: auto
+        mtu: 2500
+        speed: 1000
+      state: replaced
+
+  - name: Replaces device configuration of listed interfaces with provided configuration
+    cisco.ios.ios_l3_interfaces:
+      config:
+      - name: GigabitEthernet0/2
+        ipv4:
+        - address: 10.5.3.1/24
+      state: replaced
+
+  - name: configure top level configuration
+    cisco.ios.ios_config:
+       lines: ip route 10.5.2.0 255.255.255.0 10.5.1.1
+       save_when: changed
